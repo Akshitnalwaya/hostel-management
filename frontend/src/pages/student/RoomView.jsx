@@ -55,6 +55,16 @@ export default function RoomView() {
           <span className="badge-approved capitalize">{type}</span>
         </div>
 
+        {rooms.every((r) => !r.isUnlocked) && (
+          <div className="card border border-amber-200 bg-amber-50 mb-6 flex items-start gap-3">
+            <svg className="w-5 h-5 text-amber-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" /></svg>
+            <div>
+              <p className="font-semibold text-amber-800">No rooms available on this floor</p>
+              <p className="text-sm text-amber-700 mt-0.5">Rooms open floor by floor as they fill up. Please go back and select <strong>Floor 1</strong> to start booking.</p>
+            </div>
+          </div>
+        )}
+
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {rooms.map((room) => (
             <div key={room._id} className={`card ${!room.isUnlocked ? 'opacity-60' : ''}`}>

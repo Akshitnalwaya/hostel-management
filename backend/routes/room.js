@@ -28,7 +28,7 @@ router.post('/:id/book', protect, requireRole('student'), async (req, res) => {
     if (!room) return res.status(404).json({ success: false, message: 'Room not found' });
     if (!room.isUnlocked) return res.status(400).json({ success: false, message: 'Room is not open for booking' });
 
-    const student = await Student.findById(req.user._id);
+    const student = await Student.findById(req.user._id).select('+room +hostel +bed');
     if (student.room) return res.status(400).json({ success: false, message: 'You already have a booked bed' });
 
     const bed = room.beds.find((b) => b.bedLabel === bedLabel);

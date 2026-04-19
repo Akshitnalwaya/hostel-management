@@ -50,6 +50,11 @@ export default function SelectFloor() {
           </div>
         )}
 
+        <div className="card mb-4 bg-blue-50 border border-blue-200 flex items-start gap-3">
+          <svg className="w-5 h-5 text-blue-500 mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M12 2a10 10 0 100 20A10 10 0 0012 2z" /></svg>
+          <p className="text-sm text-blue-800">Booking starts from <strong>Floor 1</strong>. New floors open as rooms fill up.</p>
+        </div>
+
         <div className="card">
           <h2 className="font-semibold text-slate-800 mb-4">Choose a Floor</h2>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
@@ -57,10 +62,14 @@ export default function SelectFloor() {
               <button
                 key={floor}
                 onClick={() => navigate(`/room?hostelId=${selected}&type=${type}&floor=${floor}`)}
-                className="flex flex-col items-center justify-center p-4 rounded-xl border-2 border-slate-100 hover:border-brand-300 hover:bg-brand-50 transition-all group"
+                className={`flex flex-col items-center justify-center p-4 rounded-xl border-2 transition-all group ${
+                  floor === 1
+                    ? 'border-brand-300 bg-brand-50 hover:bg-brand-100'
+                    : 'border-slate-100 hover:border-brand-300 hover:bg-brand-50'
+                }`}
               >
-                <span className="text-2xl font-bold text-slate-700 group-hover:text-brand-600">{floor}</span>
-                <span className="text-xs text-slate-400 mt-1">Floor</span>
+                <span className={`text-2xl font-bold group-hover:text-brand-600 ${floor === 1 ? 'text-brand-600' : 'text-slate-700'}`}>{floor}</span>
+                <span className="text-xs text-slate-400 mt-1">{floor === 1 ? 'Start here' : 'Floor'}</span>
               </button>
             ))}
           </div>

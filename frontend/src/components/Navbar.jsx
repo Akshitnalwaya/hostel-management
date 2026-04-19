@@ -14,6 +14,7 @@ const managerLinks = [
   { to: '/manager/home', label: 'Dashboard' },
   { to: '/manager/allocated', label: 'Allocated Rooms' },
   { to: '/manager/empty', label: 'Empty Rooms' },
+  { to: '/manager/applications', label: 'Applications' },
   { to: '/manager/allocate', label: 'Allocate Room' },
   { to: '/manager/leave', label: 'Leave Requests' },
   { to: '/manager/messages', label: 'Complaints' },

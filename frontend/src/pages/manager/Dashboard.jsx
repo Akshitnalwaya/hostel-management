@@ -21,7 +21,7 @@ const StatCard = ({ label, value, color, icon }) => (
 
 export default function ManagerDashboard() {
   const { user } = useAuth();
-  const [data, setData] = useState({ allocated: 0, empty: 0, messages: 0, leave: 0 });
+  const [data, setData] = useState({ allocated: 0, empty: 0, messages: 0, leave: 0, applications: 0 });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -30,12 +30,14 @@ export default function ManagerDashboard() {
       api.get('/managers/rooms/empty'),
       api.get('/messages'),
       api.get('/leave'),
-    ]).then(([a, e, m, l]) => {
+      api.get('/applications'),
+    ]).then(([a, e, m, l, ap]) => {
       setData({
         allocated: a.data.data.length,
         empty: e.data.data.length,
         messages: m.data.data.filter(x => x.status === 'pending').length,
         leave: l.data.data.filter(x => x.status === 'pending').length,
+        applications: ap.data.data.filter(x => x.status === 'pending').length,
       });
     }).catch(() => {}).finally(() => setLoading(false));
   }, []);
@@ -64,11 +66,15 @@ export default function ManagerDashboard() {
           <StatCard label="Pending Leaves" value={data.leave} color="text-brand-600"
             icon={<svg className="w-6 h-6 text-brand-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>}
           />
+          <StatCard label="Pending Applications" value={data.applications} color="text-purple-600"
+            icon={<svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>}
+          />
         </div>
 
         <h2 className="text-lg font-semibold text-slate-800 mb-4">Quick Actions</h2>
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {[
+            { to: '/manager/applications', label: 'Applications', desc: 'Review hostel applications' },
             { to: '/manager/allocated', label: 'View Allocated Rooms', desc: 'See all occupied rooms' },
             { to: '/manager/empty', label: 'Empty Rooms', desc: 'View and unlock rooms' },
             { to: '/manager/allocate', label: 'Allocate Room', desc: 'Manually assign a student' },
