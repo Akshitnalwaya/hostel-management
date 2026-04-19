@@ -11,8 +11,9 @@ router.post('/', protect, requireRole('student'), async (req, res) => {
     const student = req.user;
     if (!student.hostel) return res.status(400).json({ success: false, message: 'You must be allocated a hostel first' });
 
-    const manager = await Manager.findOne({ hostel: student.hostel });
-    if (!manager) return res.status(404).json({ success: false, message: 'Hostel manager not found' });
+    let manager = await Manager.findOne({ hostel: student.hostel, isAdmin: false });
+    if (!manager) manager = await Manager.findOne({ isAdmin: true });
+    if (!manager) return res.status(404).json({ success: false, message: 'No manager found in the system' });
 
     const msg = await Message.create({
       sender: student._id,
