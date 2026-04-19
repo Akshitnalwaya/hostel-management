@@ -23,7 +23,6 @@ import AllocatedRooms from './pages/manager/AllocatedRooms';
 import EmptyRooms from './pages/manager/EmptyRooms';
 import ManagerLeaveRequests from './pages/manager/LeaveRequests';
 import ManagerMessages from './pages/manager/Messages';
-import AllocateRoom from './pages/manager/AllocateRoom';
 import ManagerApplications from './pages/manager/Applications';
 
 // Admin pages
@@ -60,7 +59,6 @@ export default function App() {
           <Route path="/manager/empty" element={<EmptyRooms />} />
           <Route path="/manager/leave" element={<ManagerLeaveRequests />} />
           <Route path="/manager/messages" element={<ManagerMessages />} />
-          <Route path="/manager/allocate" element={<AllocateRoom />} />
           <Route path="/manager/applications" element={<ManagerApplications />} />
         </Route>
 

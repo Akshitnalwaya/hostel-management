@@ -77,7 +77,6 @@ export default function ManagerDashboard() {
             { to: '/manager/applications', label: 'Applications', desc: 'Review hostel applications' },
             { to: '/manager/allocated', label: 'View Allocated Rooms', desc: 'See all occupied rooms' },
             { to: '/manager/empty', label: 'Empty Rooms', desc: 'View and unlock rooms' },
-            { to: '/manager/allocate', label: 'Allocate Room', desc: 'Manually assign a student' },
             { to: '/manager/messages', label: 'Complaints', desc: 'View & resolve complaints' },
             { to: '/manager/leave', label: 'Leave Requests', desc: 'Approve or reject leaves' },
           ].map((l) => (

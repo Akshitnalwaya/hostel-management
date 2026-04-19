@@ -2,8 +2,6 @@ const express = require('express');
 const router = express.Router();
 const Manager = require('../models/Manager');
 const Room = require('../models/Room');
-const Student = require('../models/Student');
-const Hostel = require('../models/Hostel');
 const { protect, requireRole } = require('../middleware/auth');
 
 // GET /api/managers/profile - own profile
@@ -51,37 +49,5 @@ router.post('/rooms/unlock', protect, requireRole('manager', 'admin'), async (re
   }
 });
 
-// POST /api/managers/allocate - manually allocate a student to a room/bed
-router.post('/allocate', protect, requireRole('manager', 'admin'), async (req, res) => {
-  try {
-    const { studentId, roomId, bedLabel } = req.body;
-
-    const room = await Room.findById(roomId);
-    if (!room) return res.status(404).json({ success: false, message: 'Room not found' });
-
-    const student = await Student.findById(studentId);
-    if (!student) return res.status(404).json({ success: false, message: 'Student not found' });
-
-    const bed = room.beds.find((b) => b.bedLabel === bedLabel);
-    if (!bed) return res.status(404).json({ success: false, message: 'Bed not found' });
-    if (bed.isBooked) return res.status(400).json({ success: false, message: 'Bed already booked' });
-
-    bed.isBooked = true;
-    bed.student = student._id;
-    if (room.beds.every((b) => b.isBooked)) room.isFull = true;
-    await room.save();
-
-    student.room = room._id;
-    student.hostel = room.hostel;
-    student.bed = bedLabel;
-    await student.save();
-
-    await Hostel.findByIdAndUpdate(room.hostel, { $inc: { totalStudents: 1 } });
-
-    res.json({ success: true, message: 'Room allocated successfully' });
-  } catch (err) {
-    res.status(500).json({ success: false, message: err.message });
-  }
-});
 
 module.exports = router;
